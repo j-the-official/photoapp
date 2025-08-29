@@ -1,0 +1,20 @@
+<%= link_to "ログアウト", session_path, method: :delete %>
+
+<h1>写真一覧</h1>
+
+<%= link_to "新しい写真をアップロード", new_photo_path %>
+
+<% if @photos.any? %>
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+    <% @photos.each do |photo| %>
+      <div style="text-align: center;">
+        <p style="margin-top: 8px;"><%= photo.title %></p>
+        <div style="width: 200px; height: 200px; margin: 0 auto; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); background: #f8f8f8; overflow: hidden;">
+          <% if photo.image.attached? %>
+            <%= image_tag(photo.image, style: "max-width: 100%; max-height: 100%; object-fit: contain;") %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

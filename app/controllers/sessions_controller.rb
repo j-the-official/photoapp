@@ -1,9 +1,10 @@
 class SessionsController < ApplicationController
   def new
+    redirect_to photos_path if logged_in?
   end
 
   def create
-    if params[:user_id].blank? 
+    if params[:user_id].blank?
         flash.now[:alert] = "ユーザーIDを入力してください"
         return render :new, status: :unprocessable_entity
     end
