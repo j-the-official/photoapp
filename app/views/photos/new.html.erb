@@ -1,0 +1,31 @@
+
+<%= link_to "ログアウト", session_path, method: :delete %>
+
+<h1>写真アップロード</h1>
+
+<%= form_with model: @photo, local: true do |form| %>
+  <% if @photo.errors.any? %>
+    <div style="color: red;">
+      <ul>
+        <% @photo.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :title, "タイトル" %><br>
+    <%= form.text_field :title, maxlength: 30, required: true %>
+  </div>
+
+  <div>
+    <%= form.label :image, "画像ファイル" %><br>
+    <%= form.file_field :image, required: true %>
+  </div>
+
+  <div>
+    <%= form.submit "アップロード" %>
+    <%= link_to "キャンセル", photos_path %>
+  </div>
+<% end %>
