@@ -2,6 +2,8 @@
 
 <h1>写真一覧</h1>
 
+<%= link_to "MyTwitterAppと連携", "http://unifa-recruit-my-tweet-app.ap-northeast-1.elasticbeanstalk.com/oauth/authorize?client_id=v7BfrCSBJB_IwUAYBLtqsEMnEo0UctHatPjdeQqmkxQ&response_type=code&redirect_uri=http://localhost:3000/oauth/callback&scope=write_tweet", target: "_blank", rel: "noopener" %>
+<br>
 <%= link_to "新しい写真をアップロード", new_photo_path %>
 
 <% if @photos.any? %>
@@ -14,6 +16,11 @@
             <%= image_tag(photo.image, style: "max-width: 100%; max-height: 100%; object-fit: contain;") %>
           <% end %>
         </div>
+        <% if session[:access_token].present? %>
+          <div style="margin-top: 8px;">
+            <%= button_to "ツイートする", tweet_photo_path(photo), method: :post %>
+          </div>
+        <% end %>
       </div>
     <% end %>
   </div>

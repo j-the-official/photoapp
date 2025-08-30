@@ -4,18 +4,18 @@ class SessionsController < ApplicationController
   end
 
   def create
-    if params[:user_id].blank?
-        flash.now[:alert] = "ユーザーIDを入力してください"
-        return render :new, status: :unprocessable_entity
-    end
-    if params[:password].blank?
-      flash.now[:alert] = "パスワードを入力してください"
+    errors = []
+    errors << "ユーザーIDを入力してください" if params[:user_id].blank?
+    errors << "パスワードを入力してください" if params[:password].blank?
+
+    if errors.any?
+      flash.now[:alert] = errors.join("<br>")
       return render :new, status: :unprocessable_entity
     end
 
     if params[:user_id] == params[:password]
-        flash.now[:alert] = "ユーザーIDとパスワードが⼀致するユーザーが存在しない"
-        return render :new, status: :unprocessable_entity
+      flash.now[:alert] = "ユーザーIDとパスワードが⼀致するユーザーが存在しない"
+      return render :new, status: :unprocessable_entity
     end
 
     user = User.find_by(user_id: params[:user_id])
@@ -23,7 +23,7 @@ class SessionsController < ApplicationController
       session[:user_id] = user.id
       redirect_to root_path, notice: "ログインしました"
     else
-      flash.now[:alert] = "ユーザーIDまたはパスワードが無効です"
+      flash.now[:alert] = "ユーザーID、もしくはパスワードが正しくありません。"
       render :new, status: :unprocessable_entity
     end
   end
